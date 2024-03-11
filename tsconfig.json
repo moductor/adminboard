@@ -15,11 +15,15 @@
     "plugins": [
       {
         "name": "next"
+      },
+      {
+        "transform": "typia/lib/transform"
       }
     ],
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "strictNullChecks": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
