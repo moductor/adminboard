@@ -1,5 +1,10 @@
 "use client";
 
+import Card from "@/components/Card";
+import Form from "@/components/Form";
+import FormButton from "@/components/FormButton";
+import FormTextFieldRow from "@/components/FormTextFieldRow";
+import InfoBanner from "@/components/InfoBanner";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { trpc } from "../_trpc/client";
@@ -32,42 +37,31 @@ export default function LoginForm() {
   return (
     <div className="grid justify-items-center gap-4">
       <p className="text-lg">Adminboard</p>
-      <div className="grid w-screen max-w-80 gap-6 rounded-xl border border-white border-opacity-20 bg-white bg-opacity-10 p-4 shadow-md shadow-gray-900">
+      <Card className="grid w-screen max-w-80 gap-6">
         <h1 className="text-center text-3xl font-bold">Log In</h1>
         {errorMessage && (
-          <p className="text-wrap rounded-lg border border-red-500 border-opacity-20 bg-red-500 bg-opacity-10 p-2 text-red-500">
-            {errorMessage}
-          </p>
+          <InfoBanner variant={{ color: "error" }}>{errorMessage}</InfoBanner>
         )}
-        <form className="grid gap-6" action={handleSubmit}>
-          <label className="grid gap-2">
-            <span className="text-sm">User Name</span>
-            <input
-              name="username"
-              type="text"
-              placeholder="Enter your user name"
-              required={true}
-              className="border border-white border-opacity-20 p-2 focus:outline-none focus:ring"
-            />
-          </label>
-          <label className="grid gap-2">
-            <span className="text-sm">Password</span>
-            <input
-              name="password"
-              type="password"
-              placeholder="Enter your password"
-              required={true}
-              className="border border-white border-opacity-20 p-2 focus:outline-none focus:ring"
-            />
-          </label>
-          <button
-            type="submit"
-            className="justify-self-center rounded-lg bg-gray-50 px-3 py-2 font-bold leading-none text-gray-950 focus:outline-none focus:ring"
-          >
+        <Form action={handleSubmit}>
+          <FormTextFieldRow
+            name="username"
+            type="text"
+            label="User Name"
+            placeholder="Enter your user name"
+            required={true}
+          />
+          <FormTextFieldRow
+            name="password"
+            type="password"
+            label="Password"
+            placeholder="Enter your password"
+            required={true}
+          />
+          <FormButton type="submit" className="justify-self-center">
             Log In
-          </button>
-        </form>
-      </div>
+          </FormButton>
+        </Form>
+      </Card>
     </div>
   );
 }
