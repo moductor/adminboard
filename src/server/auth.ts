@@ -1,16 +1,13 @@
+import { generateToken } from "@/utils/generateToken";
 import { authenticate } from "@/wildduck/authentication";
 import { TRPCError } from "@trpc/server";
+import { cookies } from "next/headers";
 import typia from "typia";
 import { publicProcedure, router } from "./trpc";
 
-type AuthenticateInput = {
-  username: string;
-  password: string;
-};
-
 export const authRouter = router({
   authenticate: publicProcedure
-    .input(typia.createAssertEquals<AuthenticateInput>())
+    .input(typia.createAssertEquals<{ username: string; password: string }>())
     .mutation(async ({ input }) => {
       async function getUserId() {
         const res = await authenticate(input.username, input.password);
@@ -25,6 +22,10 @@ export const authRouter = router({
       }
 
       const userId = await getUserId();
-      return userId;
+      const token = generateToken(userId);
+
+      cookies().set("JWT", token, { path: "/", sameSite: "strict" });
+
+      return { userId, token };
     }),
 });
