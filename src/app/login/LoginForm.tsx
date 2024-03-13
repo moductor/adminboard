@@ -1,13 +1,15 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { trpc } from "../_trpc/client";
 
 export default function LoginForm() {
+  const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
   const { mutate } = trpc.auth.authenticate.useMutation({
-    onSuccess: (id) => console.log(id),
+    onSuccess: () => router.push("/"),
     onError: (error) => {
       if (error.data?.code == "FORBIDDEN") {
         setErrorMessage("User name or password is incorrect");
