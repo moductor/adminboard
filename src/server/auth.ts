@@ -12,14 +12,19 @@ export const authRouter = router({
   authenticate: publicProcedure
     .input(typia.createAssertEquals<AuthenticateInput>())
     .mutation(async ({ input }) => {
-      const res = await authenticate(input.username, input.password);
+      async function getUserId() {
+        const res = await authenticate(input.username, input.password);
 
-      if (!res.error) return res.data.userId;
+        if (!res.error) return res.data.userId;
 
-      if (res.status == 403) {
-        throw new TRPCError({ code: "FORBIDDEN", message: res.error });
+        if (res.status == 403) {
+          throw new TRPCError({ code: "FORBIDDEN", message: res.error });
+        }
+
+        throw new TRPCError({ code: "BAD_REQUEST" });
       }
 
-      throw new TRPCError({ code: "BAD_REQUEST" });
+      const userId = await getUserId();
+      return userId;
     }),
 });
