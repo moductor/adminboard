@@ -1,5 +1,4 @@
-import { initWildduck } from "@/utils/initWildduck";
-import { authenticateUser } from "@absolit/simple-wildduck";
+import { authenticate } from "@/wildduck/authentication";
 import { TRPCError } from "@trpc/server";
 import typia from "typia";
 import { publicProcedure, router } from "./trpc";
@@ -13,24 +12,12 @@ export const authRouter = router({
   authenticate: publicProcedure
     .input(typia.createAssertEquals<AuthenticateInput>())
     .mutation(async ({ input }) => {
-      initWildduck();
+      const res = await authenticate(input.username, input.password);
 
-      try {
-        const res = await authenticateUser(input);
-        if (res.status == 200 && res.data.success) return res.data.id;
-      } catch (e) {
-        if (!Object.hasOwn(e as any, "response")) {
-          throw new TRPCError({ code: "BAD_REQUEST", cause: e });
-        }
+      if (!res.error) return res.data.userId;
 
-        const res = (e as any).response as {
-          status: number;
-          data: { [prop: string]: any };
-        };
-
-        if (res.status == 403) {
-          throw new TRPCError({ code: "FORBIDDEN" });
-        }
+      if (res.status == 403) {
+        throw new TRPCError({ code: "FORBIDDEN", message: res.error });
       }
 
       throw new TRPCError({ code: "BAD_REQUEST" });
