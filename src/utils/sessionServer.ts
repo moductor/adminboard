@@ -1,4 +1,3 @@
-import { getUserPermissions } from "@/database/functions/Permissions";
 import { PermissionKey, getPermission } from "@/database/models/Permissions";
 import { cookies, headers } from "next/headers";
 import { getDataFromTokenStr } from "./generateToken";
@@ -29,6 +28,5 @@ export function isLoggedIn() {
 export function can(key: PermissionKey) {
   const data = getCurrentUserData();
   if (!data) return;
-  const permissions = getUserPermissions(data.userId);
-  return getPermission(permissions, key);
+  return getPermission(data.permissions, key);
 }
