@@ -5,7 +5,9 @@ type Props = {
   children?: ReactNode;
 };
 
-export default function NavbarGroup({ title, children }: Props) {
+export default function VerticalNavbarGroup({ title, children }: Props) {
+  if (!children) return <></>;
+
   return (
     <div className="grid gap-2">
       {title && <p className="text-sm font-bold leading-none">{title}</p>}

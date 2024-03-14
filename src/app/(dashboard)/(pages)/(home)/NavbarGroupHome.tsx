@@ -1,10 +1,10 @@
-import NavbarButton from "../../NavbarButton";
-import NavbarGroup from "../../NavbarGroup";
+import VerticalNavbarButton from "../../../../components/VerticalNavbarButton";
+import VerticalNavbarGroup from "../../../../components/VerticalNavbarGroup";
 
 export default function NavbarGroupHome() {
   return (
-    <NavbarGroup>
-      <NavbarButton href="/">Home</NavbarButton>
-    </NavbarGroup>
+    <VerticalNavbarGroup>
+      <VerticalNavbarButton href="/">Home</VerticalNavbarButton>
+    </VerticalNavbarGroup>
   );
 }

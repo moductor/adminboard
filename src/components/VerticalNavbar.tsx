@@ -1,13 +1,14 @@
 import { ReactNode } from "react";
 
 type Props = {
+  title?: string;
   children?: ReactNode;
 };
 
-export default function Navbar({ children }: Props) {
+export default function VerticalNavbar({ title, children }: Props) {
   return (
     <div className="grid min-w-32 gap-6">
-      <p className="text-lg">Adminboard</p>
+      {title && <p className="text-lg">{title}</p>}
       <nav className="grid gap-4">{children}</nav>
     </div>
   );

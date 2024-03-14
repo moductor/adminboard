@@ -30,7 +30,7 @@ type Props = {
   variant?: typeof navbarButtonClass.defaultVariants.color;
 };
 
-export default function NavbarButton({
+export default function VerticalNavbarButton({
   href,
   onClick,
   children,

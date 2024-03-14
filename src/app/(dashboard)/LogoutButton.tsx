@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import VerticalNavbarButton from "../../components/VerticalNavbarButton";
 import { trpc } from "../_trpc/client";
-import NavbarButton from "./NavbarButton";
 
 export default function LogoutButton() {
   const router = useRouter();
@@ -12,8 +12,8 @@ export default function LogoutButton() {
   });
 
   return (
-    <NavbarButton variant="destructive" onClick={() => mutate()}>
+    <VerticalNavbarButton variant="destructive" onClick={() => mutate()}>
       Log Out
-    </NavbarButton>
+    </VerticalNavbarButton>
   );
 }

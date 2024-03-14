@@ -1,14 +1,16 @@
+import VerticalNavbar from "../../components/VerticalNavbar";
+import VerticalNavbarSeparator from "../../components/VerticalNavbarSeparator";
 import NavbarGroupHome from "./(pages)/(home)/NavbarGroupHome";
+import NavbarGroupUsers from "./(pages)/users/NavbarGroupUsers";
 import LogoutButton from "./LogoutButton";
-import Navbar from "./Navbar";
-import NavbarSeparator from "./NavbarSeparator";
 
 export default function NavbarWrapper() {
   return (
-    <Navbar>
+    <VerticalNavbar title="Adminboard">
       <NavbarGroupHome />
-      <NavbarSeparator />
+      <NavbarGroupUsers />
+      <VerticalNavbarSeparator />
       <LogoutButton />
-    </Navbar>
+    </VerticalNavbar>
   );
 }
