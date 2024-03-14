@@ -11,6 +11,8 @@ export type PermissionsBase = {
 
 export type Permissions = PartialDeep<PermissionsBase>;
 
+export type PermissionKey = RecursiveKeyOf<PermissionsBase>;
+
 export const defaultPermissions: PermissionsBase = {
   users: {
     list: true,
@@ -22,7 +24,7 @@ export const defaultPermissions: PermissionsBase = {
 
 export function getPermissionFromGivenData(
   permissions: Permissions,
-  key: RecursiveKeyOf<PermissionsBase>,
+  key: PermissionKey,
 ) {
   const keys = key.split(".");
 
@@ -38,10 +40,7 @@ export function getPermissionFromGivenData(
   return currentValue as boolean;
 }
 
-export function getPermission(
-  permissions: Permissions,
-  key: RecursiveKeyOf<PermissionsBase>,
-) {
+export function getPermission(permissions: Permissions, key: PermissionKey) {
   return (
     getPermissionFromGivenData(permissions, key) ||
     getPermissionFromGivenData(defaultPermissions, key)
