@@ -1,4 +1,4 @@
-import { getCurrentUser } from "@/utils/sessionServer";
+import { getCurrentUserData } from "@/utils/sessionServer";
 import { initTRPC } from "@trpc/server";
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import { NextRequest } from "next/server";
@@ -7,7 +7,11 @@ export function createContext({
   req,
   resHeaders,
 }: FetchCreateContextFnOptions) {
-  return { req: req as NextRequest, resHeaders, userId: getCurrentUser() };
+  return {
+    req: req as NextRequest,
+    resHeaders,
+    userData: getCurrentUserData(),
+  };
 }
 
 export type TRPCContext = typeof createContext;

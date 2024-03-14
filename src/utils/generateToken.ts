@@ -1,11 +1,15 @@
+import { Permissions } from "@/database/models/Permissions";
 import { Jwt, JwtPayload, decode, sign } from "jsonwebtoken";
 
-export type TokenData = JwtPayload & {
+export type TokenDataBase = {
   userId: string;
+  permissions: Permissions;
 };
 
-export function generateToken(userId: string) {
-  const token = sign({ userId } as TokenData, process.env.JWT_ACCESS_KEY);
+export type TokenData = JwtPayload & TokenDataBase;
+
+export function generateToken(data: TokenData) {
+  const token = sign(data, process.env.JWT_ACCESS_KEY);
   return token;
 }
 
@@ -28,13 +32,13 @@ export function isTokenStrValid(tokenStr?: string) {
   return isTokenValid(parseToken(tokenStr));
 }
 
-export function getUserIdFromToken(token?: Jwt) {
+export function getDataFromToken(token?: Jwt) {
   if (!token) return;
   if (!isTokenValid(token)) return;
   const payload = token.payload as TokenData;
-  return payload.userId;
+  return payload;
 }
 
-export function getUserIdFromTokenStr(tokenStr?: string) {
-  return getUserIdFromToken(parseToken(tokenStr));
+export function getDataFromTokenStr(tokenStr?: string) {
+  return getDataFromToken(parseToken(tokenStr));
 }

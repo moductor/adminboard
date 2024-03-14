@@ -1,3 +1,4 @@
+import { getUserPermissions } from "@/database/functions/Permissions";
 import { generateToken } from "@/utils/generateToken";
 import { authenticate } from "@/wildduck/authentication";
 import { TRPCError } from "@trpc/server";
@@ -22,14 +23,17 @@ export const authRouter = router({
       }
 
       const userId = await getUserId();
-      const token = generateToken(userId);
+      const token = generateToken({
+        userId,
+        permissions: getUserPermissions(userId),
+      });
 
       cookies().set("JWT", token, { path: "/", sameSite: "strict" });
 
       return { userId, token };
     }),
   logout: publicProcedure.mutation(({ ctx }) => {
-    if (!ctx.userId) throw new TRPCError({ code: "UNAUTHORIZED" });
+    if (!ctx.userData) throw new TRPCError({ code: "UNAUTHORIZED" });
     cookies().delete("JWT");
   }),
 });
