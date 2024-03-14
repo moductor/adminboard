@@ -28,4 +28,8 @@ export const authRouter = router({
 
       return { userId, token };
     }),
+  logout: publicProcedure.mutation(({ ctx }) => {
+    if (!ctx.userId) throw new TRPCError({ code: "UNAUTHORIZED" });
+    cookies().delete("JWT");
+  }),
 });
