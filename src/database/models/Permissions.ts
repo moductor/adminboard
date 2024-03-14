@@ -16,9 +16,9 @@ export type PermissionKey = RecursiveKeyOf<PermissionsBase>;
 export const defaultPermissions: PermissionsBase = {
   users: {
     list: true,
-    create: false,
-    delete: false,
-    update: false,
+    create: true,
+    delete: true,
+    update: true,
   },
 };
 
