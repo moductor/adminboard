@@ -24,8 +24,8 @@ export default function InfoBanner({
   ...props
 }: Props) {
   return (
-    <p className={infoBannerClass({ className, ...variant })} {...props}>
+    <div className={infoBannerClass({ className, ...variant })} {...props}>
       {children}
-    </p>
+    </div>
   );
 }
