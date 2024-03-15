@@ -48,6 +48,13 @@ export async function call<D>({
   try {
     return (await action()) as WildduckResponse<D>;
   } catch (e) {
+    if ((e as any)["code"] == "ECONNREFUSED") {
+      return {
+        status: 502,
+        error: "Error connecting to the Wildduck server",
+      } as WildduckResponse<D>;
+    }
+
     let error = e;
     if (!Object.hasOwn(e as any, "response")) {
       if (onUnknown) return (await onUnknown(e)) as WildduckResponse<D>;
