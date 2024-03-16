@@ -26,8 +26,12 @@ export default function FormCheckboxRow({
   const [isChecked, setIsChecked] = usePropState(getChecked());
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    if (checked != undefined || onChange) {
+      if (onChange) return onChange(e);
+      return;
+    }
+
     setIsChecked(e.target.checked);
-    if (onChange) return onChange(e);
   }
 
   return (
