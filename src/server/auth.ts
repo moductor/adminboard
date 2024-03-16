@@ -1,10 +1,11 @@
 import { getUserPermissions } from "@/database/functions/Permissions";
+import { PermissionKey, getPermissions } from "@/database/models/Permissions";
 import { generateToken } from "@/utils/generateToken";
 import { authenticate } from "@/wildduck/authentication";
 import { TRPCError } from "@trpc/server";
 import { cookies } from "next/headers";
 import typia from "typia";
-import { publicProcedure, router } from "./trpc";
+import { TRPCContext, publicProcedure, router } from "./trpc";
 
 export const authRouter = router({
   authenticate: publicProcedure
@@ -37,3 +38,35 @@ export const authRouter = router({
     cookies().delete("JWT");
   }),
 });
+
+type AuthorizeInput = {
+  userId?: string;
+  permissions?: PermissionKey[];
+};
+
+export function authorize(ctx: TRPCContext, input?: AuthorizeInput) {
+  const user = ctx.userData;
+
+  if (!user) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Not logged in" });
+  }
+
+  if (!input) return;
+
+  if (input.userId && input.userId != user.userId) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Logged in as wrong user",
+    });
+  }
+
+  if (
+    input.permissions &&
+    !getPermissions(user.permissions, input.permissions)
+  ) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Insufficient permissions",
+    });
+  }
+}

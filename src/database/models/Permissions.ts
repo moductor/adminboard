@@ -47,6 +47,14 @@ export function getPermission(permissions: Permissions, key: PermissionKey) {
   );
 }
 
+export function getPermissions(
+  permissions: Permissions,
+  keys: PermissionKey[],
+) {
+  const res = keys.filter((key) => !getPermission(permissions, key));
+  return !res.length;
+}
+
 // Taken from Property Access Only Type in https://stackoverflow.com/a/65333050
 type RecursiveKeyOf<TObj extends object> = {
   [TKey in keyof TObj & (string | number)]: TObj[TKey] extends any[]
