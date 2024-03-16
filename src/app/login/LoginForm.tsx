@@ -15,14 +15,7 @@ export default function LoginForm() {
 
   const { mutate } = trpc.auth.authenticate.useMutation({
     onSuccess: () => router.push("/"),
-    onError: (error) => {
-      if (error.data?.code == "FORBIDDEN") {
-        setErrorMessage("User name or password is incorrect");
-        return;
-      }
-
-      setErrorMessage("Unknown error has occured");
-    },
+    onError: (error) => setErrorMessage(error.message),
   });
 
   function handleSubmit(data: FormData) {
