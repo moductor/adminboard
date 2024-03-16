@@ -26,6 +26,7 @@ export const authRouter = router({
       const userId = await getUserId();
       const token = generateToken({
         userId,
+        username: input.username,
         permissions: getUserPermissions(userId),
       });
 
