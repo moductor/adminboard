@@ -1,10 +1,5 @@
 import { authenticateUser } from "@absolit/simple-wildduck";
-import {
-  call,
-  DefaultUnknownCallCb,
-  protocol,
-  UnexpectedCallError,
-} from "./init";
+import { call, protocol } from "./init";
 
 export const authenticate = async (username: string, password: string) =>
   call<{ userId: string }>({
@@ -15,20 +10,12 @@ export const authenticate = async (username: string, password: string) =>
         protocol,
       });
 
-      if (res.status == 200 && res.data.success) {
-        return { status: 200, data: { userId: res.data.id } };
-      }
+      if (res.status != 200 || !res.data.success) return;
 
-      return UnexpectedCallError;
+      return { status: 200, data: { userId: res.data.id } };
     },
-    onUnknown: DefaultUnknownCallCb,
-    onError: (e) => {
-      const { status } = e!;
-
-      if (status == 403) {
-        return { status: 403, error: "Wrong username or password" };
-      }
-
-      return UnexpectedCallError;
+    onError: ({ code }) => {
+      if (code != "AuthFailed") return;
+      return { status: 403, error: "User name or password is incorrect" };
     },
   });
