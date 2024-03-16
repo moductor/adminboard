@@ -39,4 +39,9 @@ export const updateUser = async (
 
       return { status: 200 };
     },
+    onError: ({ code }) => {
+      if (code == "AuthFail" && data.existingPassword) {
+        return { status: 400, error: "Current password is not correct" };
+      }
+    },
   });

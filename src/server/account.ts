@@ -1,5 +1,4 @@
 import { codeToTrpcErrorKey } from "@/utils/codeToTrpcKey";
-import { authenticate } from "@/wildduck/authentication";
 import { updateUser } from "@/wildduck/users";
 import { TRPCError } from "@trpc/server";
 import typia from "typia";
@@ -18,16 +17,9 @@ export const accountRouter = router({
       authorize(ctx);
       const user = ctx.userData!;
 
-      const authRes = await authenticate(user.username, input.currentPassword);
-      if (authRes.error) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Current password is not correct",
-        });
-      }
-
       const res = await updateUser(user.userId, {
         password: input.newPassword,
+        existingPassword: input.currentPassword,
       });
 
       if (!res.error) return;
