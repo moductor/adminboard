@@ -3,6 +3,7 @@ import { Jwt, JwtPayload, decode, sign } from "jsonwebtoken";
 
 export type TokenDataBase = {
   userId: string;
+  username: string;
   permissions: Permissions;
 };
 
