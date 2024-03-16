@@ -14,9 +14,10 @@ export function createContext({
   };
 }
 
-export type TRPCContext = typeof createContext;
+export type TRPCContextFunc = typeof createContext;
+export type TRPCContext = ReturnType<TRPCContextFunc>;
 
-const t = initTRPC.context<TRPCContext>().create();
+const t = initTRPC.context<TRPCContextFunc>().create();
 
 export const router = t.router;
 export const publicProcedure = t.procedure;
