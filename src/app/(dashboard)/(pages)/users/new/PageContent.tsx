@@ -12,6 +12,7 @@ import FormPasswordFieldRow, {
 } from "@/components/FormPasswordFieldRow";
 import FormTextFieldRow from "@/components/FormTextFieldRow";
 import InfoBanner from "@/components/InfoBanner";
+import { formdataGetters } from "@/utils/formdataGetters";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -32,15 +33,9 @@ export default function PageContent() {
   });
 
   function handleSubmit(data: FormData) {
+    const { field, checkbox } = formdataGetters(data);
+
     setErrorMessage(undefined);
-
-    function field(name: string) {
-      return data.get(name)?.toString() || undefined;
-    }
-
-    function checkbox(name: string) {
-      return !!field(name);
-    }
 
     if (!passwordStrength?.strong) {
       setErrorMessage(
